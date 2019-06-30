@@ -1,6 +1,14 @@
 #!/usr/bin/python
 import sys
 from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+from src.logger.LOG import LOG
+from src.AppConstants import AppConstants
+
 """
 .. module:: CustomDNN
    :platform: Unix, Windows
@@ -37,7 +45,7 @@ class CustomDNN():
 								   n_informative=vn_features, n_redundant=0,
 
 								   n_clusters_per_class=2, random_state=26)
-
+		LOG.I("Dimension Generation - Successful")
 		return True
 
 	def setData(self, vX, vY):
@@ -53,7 +61,43 @@ class CustomDNN():
         :rtype: bool
         '''
 		self.X, self.y = vX, vY
+		LOG.I("Data Initialization - Successful")
 		return True
+
+	def visualizeData(self):
+		''' This is a instance method of CustomDNN used for initializing input dataset
+
+		:param None: None
+		:type None: None
+
+		:return: True if generation is Success else False
+		:rtype: bool
+		'''
+		colors = ['black', 'yellow']
+		cmap = ListedColormap(colors)
+		plt.figure()
+		plt.title('Non-linearly separable classes')
+		plt.scatter(self.X[:, 0], self.X[:, 1], c=self.y, marker='o', s=50, cmap=cmap, alpha=0.5)
+		plt.savefig(AppConstants.getRootPath() + 'analysis_reports/1.DataHeatMapVisualization.png', bbox_inches='tight')
+		LOG.I("Visualization map is shown");
+		return True
+
+	def prepareData(self):
+		''' This is a instance method of CustomDNN used for preparting input dataset by reordering its dimensions
+
+        :param None: None
+        :type None: None
+
+        :return: True if generation is Success else False
+        :rtype: bool
+        '''
+		self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.X, self.y, test_size=0.25, random_state=25)
+		LOG.D("Train Test Split - shape of X_train:{} shape 0f Y_train:{}".format(self.X_train.shape, self.Y_train.shape))
+		self.X_train = self.X_train.T
+		self.Y_train = self.Y_train.reshape(1, len(self.Y_train))
+		self.X_test = self.X_test.T
+		self.Y_test = self.Y_test.reshape(1, len(self.Y_test))
+		LOG.I("Dimension Correction - shape of X_train:{} shape 0f Y_train:{} after transformation".format(self.X_train.shape, self.Y_train.shape))
 
 """
 Functionality includes:

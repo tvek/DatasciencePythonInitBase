@@ -1,8 +1,6 @@
 from src.TVEKDNN.CustomDNN import CustomDNN
 from src.logger.LOG import LOG
 
-LOG.Configure()
-
 def test_customdnn_objectcreation():
     """Test function for CustonDNN Object Creation
 

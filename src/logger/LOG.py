@@ -1,6 +1,7 @@
 import logging
 import sys
 import os
+from src.AppConstants import AppConstants
 
 class LOG():
     '''
@@ -17,7 +18,6 @@ class LOG():
         """
         __init__() is a instance method of LOG used initialize the class instance
         """
-
         self.Configure()
 
 
@@ -46,7 +46,7 @@ class LOG():
         stLogger.setLevel(logging.INFO)
 
         # create a file handler
-        handler = LOG.ConfigureHandler(logging.FileHandler(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'../../logs/CustomDNN.log'))
+        handler = LOG.ConfigureHandler(logging.FileHandler(AppConstants.getRootPath()+'logs/CustomDNN.log'))
         stLogger.addHandler(handler)
 
         # create a stdout handler
@@ -101,3 +101,5 @@ class LOG():
         :rtype: None
         """
         LOG.stLogger.warn(string)
+
+LOG.Configure()
